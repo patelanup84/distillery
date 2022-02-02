@@ -15,7 +15,7 @@ st.set_page_config(page_title='Data Distillery',
                    layout='wide')
 # ---------------------------------#
 # Data loading
-# def load_example():
+# def load_sample():
 #     data = pd.read_csv('/inputs/sample.csv')
 #     return data
 
@@ -23,7 +23,7 @@ st.set_page_config(page_title='Data Distillery',
 url = "https://raw.githubusercontent.com/patelanup84/distillery/main/inputs/sample.csv" # Make sure the url is the raw version of the file on GitHub
 download = requests.get(url).content
 # Reading the downloaded content and turning it into a pandas dataframe
-def load_example():
+def load_sample():
     data = pd.read_csv(io.StringIO(download.decode('utf-8')))
     return data
 
@@ -93,7 +93,7 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 with st.sidebar.header('1. Upload Weekly Sales Report'):
     uploaded_file = st.sidebar.file_uploader("Upload the most recent 'Sales Report - XX.XX.2022.xlsx' from AgData FTP", type=["csv"])
     st.sidebar.markdown("""
-[Example CSV input file](https://drive.google.com/file/d/13Tndqil7L_ubrjI4CsC14-z6qsHfcO5I/view?usp=sharing)
+[sample CSV input file](https://drive.google.com/file/d/13Tndqil7L_ubrjI4CsC14-z6qsHfcO5I/view?usp=sharing)
 """)
 
 # Sidebar - Specify parameter settings
@@ -130,14 +130,14 @@ if uploaded_file is not None:
     build_model(df)
 else:
     st.info('Awaiting for Weekly Sales Report file to be uploaded.')
-    if st.button('Press to use Example Dataset'):
+    if st.button('Press to use Sample Dataset'):
 
         # 2021 Invoices dataset
-        # example = load_example()
-        # X = pd.DataFrame(example.data, columns=example.feature_names)
-        # Y = pd.Series(example.target, name='response')
-        df_example = load_example()
+        # sample = load_sample()
+        # X = pd.DataFrame(sample.data, columns=sample.feature_names)
+        # Y = pd.Series(sample.target, name='response')
+        df_sample = load_sample()
         st.markdown('A sample data set from the Jan 7 Weekly Sales Report has been loaded below. Below are the first 5 rows.')
-        st.write(df_example.head(5))
+        st.write(df_sample.head(5))
 
-        build_model(df_example)
+        build_model(df_sample)
