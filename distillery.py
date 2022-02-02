@@ -5,6 +5,9 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import mean_squared_error, r2_score
 from sklearn.datasets import load_diabetes, load_boston
 
+import requests
+import io
+
 # ---------------------------------#
 # Page layout
 ## Page expands to full width
@@ -12,10 +15,17 @@ st.set_page_config(page_title='Data Distillery',
                    layout='wide')
 # ---------------------------------#
 # Data loading
-def load_example():
-    data = pd.read_csv('/inputs/sample.csv')
-    return data
+# def load_example():
+#     data = pd.read_csv('/inputs/sample.csv')
+#     return data
 
+# Data loading from Github account
+url = "https://raw.githubusercontent.com/patelanup84/distillery/main/inputs/sample.csv" # Make sure the url is the raw version of the file on GitHub
+download = requests.get(url).content
+# Reading the downloaded content and turning it into a pandas dataframe
+def load_example():
+    data = pd.read_csv(io.StringIO(download.decode('utf-8')))
+    return data
 
 
 # ---------------------------------#
