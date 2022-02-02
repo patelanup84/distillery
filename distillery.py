@@ -121,7 +121,7 @@ with st.sidebar.subheader('2.1. Matching Records'):
 # Main panel
 
 # Displays the dataset
-st.subheader('1. Dataset')
+st.subheader('1. Input Dataset')
 
 if uploaded_file is not None:
     df = pd.read_csv(uploaded_file)
