@@ -80,8 +80,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 # ---------------------------------#
 # Sidebar - Collects user input features into dataframe
-with st.sidebar.header('1. Upload Latest Weekly Report File'):
-    uploaded_file = st.sidebar.file_uploader("Upload invoice.csv from AgData", type=["csv"])
+with st.sidebar.header('1. Upload Latest Weekly Sales Report'):
+    uploaded_file = st.sidebar.file_uploader("Upload weeklysalesreport_XX-XX-2022.xlsx from AgData FTP", type=["csv"])
     st.sidebar.markdown("""
 [Example CSV input file](https://drive.google.com/file/d/13Tndqil7L_ubrjI4CsC14-z6qsHfcO5I/view?usp=sharing)
 """)
@@ -119,7 +119,7 @@ if uploaded_file is not None:
     st.write(df)
     build_model(df)
 else:
-    st.info('Awaiting for GrowerExtract.csv file to be uploaded.')
+    st.info('Awaiting for Weekly Sales Report file to be uploaded.')
     if st.button('Press to use Example Dataset'):
 
         # 2021 Invoices dataset
