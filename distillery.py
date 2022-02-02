@@ -137,7 +137,7 @@ else:
         # X = pd.DataFrame(example.data, columns=example.feature_names)
         # Y = pd.Series(example.target, name='response')
         df_example = load_example()
-        st.markdown('Invoices data from Sep 2021 has been loaded. Below are the first 5 rows.')
+        st.markdown('A sample data set from the Jan 7 Weekly Sales Report has been loaded below. Below are the first 5 rows.')
         st.write(df_example.head(5))
 
         build_model(df_example)
