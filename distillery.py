@@ -13,7 +13,7 @@ st.set_page_config(page_title='Data Distillery',
 # ---------------------------------#
 # Data loading
 def load_example():
-    data = pd.read_csv('/inputs/invoices_example.csv')
+    data = pd.read_csv('/inputs/sample.csv')
     return data
 
 
@@ -80,8 +80,8 @@ Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor i
 
 # ---------------------------------#
 # Sidebar - Collects user input features into dataframe
-with st.sidebar.header('1. Upload Latest Weekly Sales Report'):
-    uploaded_file = st.sidebar.file_uploader("Upload weeklysalesreport_XX-XX-2022.xlsx from AgData FTP", type=["csv"])
+with st.sidebar.header('1. Upload Weekly Sales Report'):
+    uploaded_file = st.sidebar.file_uploader("Upload the most recent 'Sales Report - XX.XX.2022.xlsx' from AgData FTP", type=["csv"])
     st.sidebar.markdown("""
 [Example CSV input file](https://drive.google.com/file/d/13Tndqil7L_ubrjI4CsC14-z6qsHfcO5I/view?usp=sharing)
 """)
