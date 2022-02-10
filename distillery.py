@@ -36,9 +36,9 @@ def format_dataframe(df):
   return df
 
 
-'''
-### MAIN PANEL
-'''
+
+### MAIN PANEL ###
+
 
 #Step 1. Load Grower Master file
 
@@ -77,7 +77,5 @@ if submit:
 
 
 
-'''
-### TESTING
-'''
+### TESTING ###
 
