@@ -15,5 +15,14 @@ def file_selector(folder_path='inputs/ai master file/'):
 filename = file_selector()
 st.write('You selected `%s`' % filename)
 
-df_grower = pd.read_csv(filename)
-df_grower.head(3)
+
+
+df_grower = pd.DataFrame(load_iris()['data'], columns=load_iris()['feature_names'])
+
+
+# ---------------------------------#
+# Main panel
+
+st.title('Data Distillery')
+st.write("Prototype 1.0 - Get Email Activity")
+st.write("This application will add email activity (sends, opens, clicks) to the AI Grower Master file")
