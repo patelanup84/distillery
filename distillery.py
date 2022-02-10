@@ -1,18 +1,10 @@
 import streamlit as st
-import pandas as pd
-import requests
+import os
 
+def file_selector(folder_path='.'):
+    filenames = os.listdir(folder_path)
+    selected_filename = st.selectbox('Select a file', filenames)
+    return os.path.join(folder_path, selected_filename)
 
-"""
-# My first app
-Here's our first attempt at using data to create a table:
-"""
-
-import streamlit as st
-import pandas as pd
-df = pd.DataFrame({
-  'first column': [1, 2, 3, 4],
-  'second column': [10, 20, 30, 40]
-})
-
-df
+filename = file_selector()
+st.write('You selected `%s`' % filename)
