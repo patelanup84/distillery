@@ -39,7 +39,7 @@ def format_dataframe(df):
 
 
 ### MAIN PANEL ###
-def connect_gbq(json):
+# def connect_gbq(json):
 
 
 #Step 1. Load Grower Master file
