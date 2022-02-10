@@ -40,12 +40,20 @@ def format_dataframe(df):
 # Main panel
 
 #Step 1. Load Grower Master file
-uploaded_file = st.file_uploader("Load latest AI Master File")
+
+uploaded_file = st.file_uploader('Load latest AI Master File')
 if uploaded_file is not None:
-  df_grower = pd.read_csv(uploaded_file)
-  df_grower = df_grower.astype(str)
-  df_grower = format_dataframe(df_grower)
-  st.write(df_grower)
+    df_grower = pd.read_csv(uploaded_file)
+    df_grower = df_grower.astype(str)
+    df_grower = format_dataframe(df_grower)
+    st.write(df_grower)
+
+submit = st.button('Load Grower Data')
+if submit:
+    df_grower = pd.read_csv(uploaded_file)
+    df_grower = df_grower.astype(str)
+    df_grower = format_dataframe(df_grower)
+    st.write(df_grower)
 
 
 #Step 2. Load Latest Email data from GBQ
