@@ -50,7 +50,7 @@ if uploaded_file is not None:
 
 submit = st.button('Load Grower Data')
 if submit:
-    filepath = '/inputs/ai master file/2022 AI Grower Master Data File Jan 28 - modifed.csv'
+    filepath = 'inputs/ai master file/2022 AI Grower Master Data File Jan 28 - modifed.csv'
     df_grower = pd.read_csv(filepath)
     df_grower = df_grower.astype(str)
     df_grower = format_dataframe(df_grower)
