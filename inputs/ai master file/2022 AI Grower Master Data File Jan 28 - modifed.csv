@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Grower Site Id,Grower House Id,Grower Site Name,Grower First Name,Grower Last Name,Grower Address,Grower City Name,Grower Province Name,Grower Postal,Grower Phone,Grower Email,Grower Cellular,Grower Contact Phone,Grower Contact Cell,Soil Zone,Territory Rep,ON Arysta's DNC List?,2021 Sales,Purchase in 2021,Purchase in 2020,Purchase in 2019,2021 PPG,Total Acres,Grower Brand 1,Grower Brand 2,Grower Brand 3,2022 Telus Fall Campaign Selection,2022 Telus Campaign Contact - Phone,2022 Ag Call Selection,AltaML 2022 Outputs_Cluster,AltaML 2022 Outputs_Agg Sale Amount,AltaML 2022 Outputs_Soil Zone,AltaML 2022 Outputs_predicted_target,AltaML 2022 Outputs_churn_prob
 32,32,Woodhaven Farms,Edward,Sulz,Box 262,Arden,MB,R0J0B0,2043682304,NULL,NULL,2043682304,0,Black/Grey,Kern Clayton,N,"$1,375",Yes,,,1,,,,,YES,,,0,1375,Black/Grey,1,0.61
 45,45,Guild Farms Ltd,David,Guild,Box 45 RR 3,Brandon,MB,R7A 5Y3,2047287446,dguild248@gmail.com,0,2047281137,0,Black/Grey,Kevin Kirkup,N,"$8,130",Yes,,,1,3630,,,,YES,,,1,8130,Black/Grey,1,0.56
@@ -11501,7 +11500,7 @@ Grower Site Id,Grower House Id,Grower Site Name,Grower First Name,Grower Last Na
 381874,381874,Serhan Farms LTD,NULL,NULL,Box 625,Carragana,SK,S0E0K0,NULL,NULL,NULL,NULL,NULL,Black/Grey,Shannon Urbaniak,N,,,,,1,,,,,,,,,,,,
 381875,381875,NULL,Travis,Galacz,Box 66,Carragana,SK,S0E0K0,3062787479,NULL,NULL,NULL,NULL,Black/Grey,Shannon Urbaniak,N,,,,,1,,,,,,,,,,,,
 381901,381901,Shamrock Seeds,NULL,NULL,Box 29,Winkler,MB,R6W4A1,NULL,NULL,NULL,NULL,NULL,Black/Grey,Kern Clayton,N,$59,Yes,,,1,,,,,,,,0,59,Black/Grey,1,0.69
-=======
+=======,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Grower Site Id,Grower House Id,Grower Site Name,Grower First Name,Grower Last Name,Grower Address,Grower City Name,Grower Province Name,Grower Postal,Grower Phone,Grower Email,Grower Cellular,Grower Contact Phone,Grower Contact Cell,Soil Zone,Territory Rep,ON Arysta's DNC List?,2021 Sales,Purchase in 2021,Purchase in 2020,Purchase in 2019,2021 PPG,Total Acres,Grower Brand 1,Grower Brand 2,Grower Brand 3,2022 Telus Fall Campaign Selection,2022 Telus Campaign Contact - Phone,2022 Ag Call Selection,AltaML 2022 Outputs_Cluster,AltaML 2022 Outputs_Agg Sale Amount,AltaML 2022 Outputs_Soil Zone,AltaML 2022 Outputs_predicted_target,AltaML 2022 Outputs_churn_prob
 32,32,Woodhaven Farms,Edward,Sulz,Box 262,Arden,MB,R0J0B0,2043682304,NULL,NULL,2043682304,0,Black/Grey,Kern Clayton,N,"$1,375",Yes,,,1,,,,,YES,,,0,1375,Black/Grey,1,0.61
 45,45,Guild Farms Ltd,David,Guild,Box 45 RR 3,Brandon,MB,R7A 5Y3,2047287446,dguild248@gmail.com,0,2047281137,0,Black/Grey,Kevin Kirkup,N,"$8,130",Yes,,,1,3630,,,,YES,,,1,8130,Black/Grey,1,0.56
@@ -23004,5 +23003,5 @@ Grower Site Id,Grower House Id,Grower Site Name,Grower First Name,Grower Last Na
 381874,381874,Serhan Farms LTD,NULL,NULL,Box 625,Carragana,SK,S0E0K0,NULL,NULL,NULL,NULL,NULL,Black/Grey,Shannon Urbaniak,N,,,,,1,,,,,,,,,,,,
 381875,381875,NULL,Travis,Galacz,Box 66,Carragana,SK,S0E0K0,3062787479,NULL,NULL,NULL,NULL,Black/Grey,Shannon Urbaniak,N,,,,,1,,,,,,,,,,,,
 381901,381901,Shamrock Seeds,NULL,NULL,Box 29,Winkler,MB,R6W4A1,NULL,NULL,NULL,NULL,NULL,Black/Grey,Kern Clayton,N,$59,Yes,,,1,,,,,,,,0,59,Black/Grey,1,0.69
->>>>>>> 70d65485b7d22dfc6772d7a2ad821e8c58fc5d28
+>>>>>>> 70d65485b7d22dfc6772d7a2ad821e8c58fc5d28,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 382111,347757,0,Andrew,Spek,Box 222,Ethelbert,MB,R0L0T0,2047212660,0,0,204-721-2660,0,Black/Grey,Eric Hojnocki,N,,,,,1,,,,,YES,Positive,,,,,,
