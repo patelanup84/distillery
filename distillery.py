@@ -21,4 +21,5 @@ st.write("This application will add email activity (sends, opens, clicks) to the
 uploaded_file = st.file_uploader("Load latest AI Master File")
 if uploaded_file is not None:
   df = pd.read_csv(uploaded_file)
+  df = df.astype(str)
   st.write(df)
