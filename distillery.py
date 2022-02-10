@@ -3,18 +3,16 @@ import pandas as pd
 import requests
 
 
-# """
-# # My first app
-# Here's our first attempt at using data to create a table:
-# """
+"""
+# My first app
+Here's our first attempt at using data to create a table:
+"""
 
-# import streamlit as st
-# import pandas as pd
-# df = pd.DataFrame({
-#   'first column': [1, 2, 3, 4],
-#   'second column': [10, 20, 30, 40]
-# })
+import streamlit as st
+import pandas as pd
+df = pd.DataFrame({
+  'first column': [1, 2, 3, 4],
+  'second column': [10, 20, 30, 40]
+})
 
-# df
-
-streamlit hello
+df
