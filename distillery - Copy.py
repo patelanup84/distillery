@@ -1,6 +1,12 @@
 import streamlit as st
 import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+from sklearn.datasets import load_diabetes, load_boston
 
+import requests
+import io
 
 # ---------------------------------#
 # Page layout
@@ -79,8 +85,41 @@ def build_model(df):
 # ---------------------------------#
 st.write("""
 # The Data Distillery - prototype v1.0
-This program will join the latest email data to the AI Grower Master File and provide some overall insights.
+Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
 """)
+
+# ---------------------------------#
+# Sidebar - Collects user input features into dataframe
+with st.sidebar.header('1. Upload Weekly Sales Report'):
+    uploaded_file = st.sidebar.file_uploader("Upload the most recent 'Sales Report - XX.XX.2022.xlsx' from AgData FTP", type=["csv"])
+    st.sidebar.markdown("""
+[sample CSV input file](https://drive.google.com/file/d/13Tndqil7L_ubrjI4CsC14-z6qsHfcO5I/view?usp=sharing)
+""")
+
+# Sidebar - Specify parameter settings
+with st.sidebar.header('2. Clean Data'):
+    split_size = st.sidebar.slider('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.', 10, 90, 80, 5)
+
+with st.sidebar.subheader('2.1. Matching Records'):
+    #parameter_n_estimators = st.sidebar.slider('Number of estimators (n_estimators)', 0, 1000, 100, 100)
+    parameter_max_features = st.sidebar.select_slider('Lorem ipsum', options=['low', 'medium', 'high'])
+    #parameter_min_samples_split = st.sidebar.slider(
+        # 'Minimum number of samples required to split an internal node (min_samples_split)', 1, 10, 2, 1)
+    #parameter_min_samples_leaf = st.sidebar.slider(
+        # 'Minimum number of samples required to be at a leaf node (min_samples_leaf)', 1, 10, 2, 1)
+
+with st.sidebar.subheader('2.2. Missing Values'):
+#     parameter_random_state = st.sidebar.slider('Seed number (random_state)', 0, 1000, 42, 1)
+#     parameter_criterion = st.sidebar.select_slider('Performance measure (criterion)', options=['mse', 'mae'])
+#     parameter_bootstrap = st.sidebar.select_slider('Bootstrap samples when building trees (bootstrap)',
+#                                                    options=[True, False])
+    parameter_oob_score = st.sidebar.select_slider(
+        'Lorem ipsum dolor sit amet.', options=[False, True])
+    # parameter_n_jobs = st.sidebar.select_slider('Number of jobs to run in parallel (n_jobs)', options=[1, -1])
+
+with st.sidebar.header('3. Group Data'):
+    split_size = st.sidebar.slider('Use the options below to group the individual transactional records by Grower.', 10, 90, 80, 5)
+
 
 # ---------------------------------#
 # Main panel
