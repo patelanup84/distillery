@@ -50,6 +50,7 @@ if uploaded_file is not None:
 
 submit = st.button('Load Grower Data')
 if submit:
+    uploaded_file = st.file_uploader
     df_grower = pd.read_csv(uploaded_file)
     df_grower = df_grower.astype(str)
     df_grower = format_dataframe(df_grower)
