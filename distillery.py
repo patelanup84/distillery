@@ -10,7 +10,7 @@ import re
 st.title("Data Distillery")
 st.text("Prototype 1.0 - Get Email Activity")
 
-st.write("This application will add email activity (sends, opens, clicks) to the AI Grower Master file")
+st.write("This application will enrich the existing AI Grower Data with email behaviour data for growers that we've sent marketing emails to.")
 
 # ---------------------------------#
 # User Functions
@@ -35,9 +35,11 @@ def format_dataframe(df):
 
   return df
 
+# function to connect to GBQ
 
 
 ### MAIN PANEL ###
+def connect_gbq(json):
 
 
 #Step 1. Load Grower Master file
@@ -50,7 +52,7 @@ def format_dataframe(df):
 #     st.write(df_grower)
 
 st.header('Step 1. Load Grower Master File')
-st.subheader('This is a subheader')
+# st.subheader('This is a subheader')
 
 submit = st.button('Load Grower Data')
 if submit:
@@ -58,22 +60,39 @@ if submit:
     df_grower = pd.read_csv(filepath)
     df_grower = df_grower.astype(str)
     df_grower = format_dataframe(df_grower)
+    print("Total No. of Growers in Database=",len(df_grower))
     st.write(df_grower)
 
 
+
 #Step 2. Load Latest Email data from GBQ
+st.header('Step 2. Load Email Data')
 submit = st.button('Load Email Data')
 if submit:
+
+    #connect to GBQ
+
+
+    #load table
     filepath = 'inputs/email/2022 AI Grower Master Data File Jan 28 - modifed.csv'
     df_grower = pd.read_csv(filepath)
     df_grower = df_grower.astype(str)
     df_grower = format_dataframe(df_grower)
     st.write(df_grower)
 
+    #blend with Acton data
 
 
-#blend with Acton data
 
+
+
+
+
+
+#Step 3. Load Latest Email data from GBQ
+st.header('Step 3. Blend Grower Data with Email Data')
+submit = st.button('Blend Data')
+if submit:
 
 
 
