@@ -17,9 +17,6 @@ st.write('You selected `%s`' % filename)
 
 
 
-df_grower = pd.DataFrame(load_iris()['data'], columns=load_iris()['feature_names'])
-
-
 # ---------------------------------#
 # Main panel
 
