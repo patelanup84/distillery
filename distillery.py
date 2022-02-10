@@ -30,4 +30,4 @@ st.write('You selected `%s`' % filename)
 
 # reading master file csv display first 5 rows
 df_grower = pd.read_csv('inputs/ai master file/2022 AI Grower Master Data File Jan 28 - modifed.csv')
-st.write(df.head())
+st.write(df_grower.head())
