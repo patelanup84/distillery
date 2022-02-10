@@ -7,7 +7,9 @@ import re
 
 
 #Title and Subheader
-st.title("Data Distillery - Prototype 1.0 - Get Email Activity")
+st.title("Data Distillery")
+st.write("Prototype 1.0 - Get Email Activity")
+
 st.write("This application will add email activity (sends, opens, clicks) to the AI Grower Master file")
 
 # ---------------------------------#
