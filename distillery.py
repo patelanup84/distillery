@@ -6,7 +6,6 @@ import numpy as np
 import re
 
 #for connecting to gbq
-import pandas_gbq as gbq
 from google.cloud import bigquery
 from google.oauth2 import service_account
 
@@ -39,6 +38,16 @@ def format_dataframe(df):
   df.fillna(0) #
 
   return df
+
+# function to run query in GBQ
+# Use st.cache to only rerun when the query changes or after 10 min.
+# @st.cache(ttl=600)
+def run_query(query):
+    query_job = client.query(query)
+    rows_raw = query_job.result()
+    # Convert to list of dicts. Required for st.cache to hash the return value.
+    rows = [dict(row) for row in rows_raw]
+    return rows
 
 
 ### MAIN PANEL ###
@@ -77,17 +86,15 @@ st.write('By pressing the button below, the latest available email data from Sal
 submit = st.button('Load Email Data')
 if submit:
 
-    # connect to GBQ
-    key_path = "inputs/admin/ws-performance-dd7b40645fd6.json"
-    credentials = service_account.Credentials.from_service_account_file(key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"],)
+    # Create GBQ API client (pull from .toml)
+    credentials = service_account.Credentials.from_service_account_info(st.secrets["ws_gcp_service_account"])
     client = bigquery.Client(credentials=credentials, project=credentials.project_id)
 
     # Query GBQ and create dataframe
-    query = """
-        SELECT *
-        FROM `ws-performance.sfmc.emails_totals` 
-    """
-    df_sfmc = client.query(query).to_dataframe() 
+    rows = run_query("SELECT * FROM `ws-performance.sfmc.emails_totals`")
+
+
+    df_sfmc = client.query(query).to_dataframe()
 
     #  Display dataframe
     st.write(df_grower)
