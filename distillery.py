@@ -78,25 +78,18 @@ submit = st.button('Load Email Data')
 if submit:
 
     # connect to GBQ
-    key_path = "/content/drive/Shareddrives/TADA/Data/ws-performance-dd7b40645fd6.json"
+    key_path = "inputs/admin/ws-performance-dd7b40645fd6.json"
     credentials = service_account.Credentials.from_service_account_file(key_path, scopes=["https://www.googleapis.com/auth/cloud-platform"],)
     client = bigquery.Client(credentials=credentials, project=credentials.project_id)
 
-
-    # Build query
+    # Query GBQ and create dataframe
     query = """
         SELECT *
         FROM `ws-performance.sfmc.emails_totals` 
     """
-
-    # Create dataframe
     df_sfmc = client.query(query).to_dataframe() 
 
-    #load table
-    filepath = 'inputs/email/2022 AI Grower Master Data File Jan 28 - modifed.csv'
-    df_grower = pd.read_csv(filepath)
-    df_grower = df_grower.astype(str)
-    df_grower = format_dataframe(df_grower)
+    #  Display dataframe
     st.write(df_grower)
 
     #blend with Acton data
