@@ -5,9 +5,6 @@ import os
 import numpy as np
 import re
 
-#for connecting to gbq
-from google.cloud import bigquery
-from google.oauth2 import service_account
 
 #Title and Subheader
 st.title("Data Distillery")
@@ -38,16 +35,6 @@ def format_dataframe(df):
   df.fillna(0) #
 
   return df
-
-# function to run query in GBQ
-# Use st.cache to only rerun when the query changes or after 10 min.
-# @st.cache(ttl=600)
-def run_query(query):
-    query_job = client.query(query)
-    rows_raw = query_job.result()
-    # Convert to list of dicts. Required for st.cache to hash the return value.
-    rows = [dict(row) for row in rows_raw]
-    return rows
 
 
 ### MAIN PANEL ###
@@ -81,23 +68,20 @@ if uploaded_file is not None:
 
 #Step 2. Load Latest Email data from GBQ
 st.header('Step 2. Load Email Data')
-st.write('By pressing the button below, the latest available email data from Sales Force Marketing Cloud and Acton will be imported into this application for blending and analysis.')
+st.write('Pres the button below to upload the latest email activity from SFMC and Acton ')
 
 submit = st.button('Load Email Data')
 if submit:
 
-    # Create GBQ API client (pull from .toml)
-    credentials = service_account.Credentials.from_service_account_info(st.secrets["ws_gcp_service_account"])
-    client = bigquery.Client(credentials=credentials, project=credentials.project_id)
+    # Load formatted & unstacked email data
+    filepath = 'inputs/email/emails_formatted.csv'
+    df_emails = pd.read_csv(filepath)
 
-    # Query GBQ and create dataframe
-    rows = run_query("SELECT * FROM `ws-performance.sfmc.emails_totals`")
-
-
-    df_sfmc = client.query(query).to_dataframe()
+    # Load formatted and & unstacked SFMC data 
+    df_ = format_dataframe(df_acton)
 
     #  Display dataframe
-    st.write(df_grower)
+    st.write(df_emails)
 
     #blend with Acton data
 
@@ -112,8 +96,8 @@ if submit:
 # st.header('Step 3. Blend Grower Data with Email Data')
 # submit = st.button('Blend Data')
 # if submit:
-#     filepath = 'inputs/ai master file/2022 AI Grower Master Data File Jan 28 - modifed.csv'
-#     df_grower = pd.read_csv(filepath)
+    filepath = 'inputs/ai master file/2022 AI Grower Master Data File Jan 28 - modifed.csv'
+    df_grower = pd.read_csv(filepath)
 
 
 
