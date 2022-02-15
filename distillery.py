@@ -68,7 +68,7 @@ if uploaded_file is not None:
 
 #Step 2. Load Email Data
 st.header('Step 2. Load Email Data')
-st.write('Pres the button below to upload the latest email activity from SFMC and Acton')
+st.write('Pres the button below to upload the 2021 email activity directly from SFMC')
 
 submit = st.button('Load Email Data')
 if submit:
@@ -88,7 +88,7 @@ st.write('Below will be charts/statistical data for email perf. over the p. year
 
 #Step 3. Load Weather Data
 st.header('Step 3. Load Weather Data')
-st.write('Pres the button below to upload the latest weather metrics for grower regions')
+st.write('Pres the button below to upload the 2021 weather data for grower regions from Environment Canada (via Meteostat')
 
 st.subheader('Weather Analysis')
 st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year')
