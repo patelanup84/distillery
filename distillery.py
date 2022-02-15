@@ -8,9 +8,9 @@ import re
 
 #Title and Subheader
 st.title("Data Distillery")
-st.subheader("Prototype 1.0 - Get Email Activity")
+st.subheader("Prototype 1.0 - Email & Weather Data for 2022.")
 
-st.write("This application will enrich the existing AI Grower Data with email behaviour data.")
+st.write("This application will enrich the existing AI Grower Data with email behaviour data for use in customer journey/persona building, marketing campaigns, ML modelling etc.")
 
 # ---------------------------------#
 # User Functions
@@ -82,27 +82,24 @@ if submit:
 
     #blend with Acton data
 
-# st.write('Email Analysis')
+st.subheader('Email Analysis')
+st.write('Below will be charts/statistical data for email perf. over the p. year')
 
 
-#Step 2. Load Email Data
-st.header('Step 2. Load Email Data')
-st.write('Pres the button below to upload the latest email activity from SFMC and Acton ')
+#Step 3. Load Weather Data
+st.header('Step 3. Load Weather Data')
+st.write('Pres the button below to upload the latest weather metrics for grower regions')
 
+st.subheader('Weather Analysis')
+st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year')
 
+#Step 4. Blend Data
+st.header('Step 4. Blend Data')
+st.write('Pres the button below to blend the latest email and weather data to the uploaded grower master file')
 
+st.subheader('Grower Data Analysis')
+st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year. **What qustions do we want to answer?**')
 
-
-#Step 3. Load Latest Email data from GBQ
-# st.header('Step 3. Blend Grower Data with Email Data')
-# submit = st.button('Blend Data')
-# if submit:
-    filepath = 'inputs/ai master file/2022 AI Grower Master Data File Jan 28 - modifed.csv'
-    df_grower = pd.read_csv(filepath)
-
-
-
-
-
-### TESTING ###
-
+#Step 5. Export Data
+st.header('Step 5. Export Data')
+st.write('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua')
