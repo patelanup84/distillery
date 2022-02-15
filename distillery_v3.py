@@ -42,7 +42,7 @@ def format_dataframe(df):
 #Step 1. Load Grower Master file
 st.header('Step 1. Load Grower Master File')
 
-uploaded_file = st.file_uploader('Load the latest grower master file.csv')
+uploaded_file = st.file_uploader('Load the latest grower master file .csv')
 if uploaded_file is not None:
     
     # load selected file
@@ -66,9 +66,9 @@ if uploaded_file is not None:
     # display dataframe
     st.write(df_grower)
 
-#Step 2. Load Email Data
+#Step 2. Load Latest Email data from GBQ
 st.header('Step 2. Load Email Data')
-st.write('Pres the button below to upload the latest email activity from SFMC and Acton')
+st.write('Pres the button below to upload the latest email activity from SFMC and Acton ')
 
 submit = st.button('Load Email Data')
 if submit:
@@ -82,12 +82,8 @@ if submit:
 
     #blend with Acton data
 
-# st.write('Email Analysis')
 
 
-#Step 2. Load Email Data
-st.header('Step 2. Load Email Data')
-st.write('Pres the button below to upload the latest email activity from SFMC and Acton ')
 
 
 
