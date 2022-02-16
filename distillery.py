@@ -1,9 +1,20 @@
-import streamlit as st
-
+# import libraries
 import pandas as pd
-import os
-import numpy as np
 import re
+import numpy as np
+import os
+
+# for location data
+import requests
+import time
+
+# for weather data
+from datetime import datetime
+from meteostat import Point, Daily, Monthly
+
+# for progress bar
+from time import sleep
+from tqdm import tqdm
 
 
 #Title and Subheader
@@ -35,6 +46,40 @@ def format_dataframe(df):
   df.fillna(0) #
 
   return df
+
+
+# Dictionary to define program years
+dict_proyr = {'2016':['2015-09-01','2016-08-31'],
+              '2017':['2016-09-01','2017-08-31'],
+              '2018':['2017-09-01','2018-08-31'],
+              '2019':['2018-09-01','2019-08-31'],
+              '2020':['2019-09-01','2020-08-31'],
+              '2021':['2020-09-01','2021-08-31'],
+              '2022':['2021-09-01','2022-08-31']}
+
+
+## Function to get avg. temp. and precip. for specific location
+def get_meteostat_results(coordinates):
+
+  # Split grower_coord string to get lat,lon
+  grower_lat = float(coordinates.split(',')[0])
+  grower_lon = float(coordinates.split(',')[1])
+  
+  # Get location by aggregate of nearby weather stations
+  location = Point(lat=grower_lat, lon=grower_lon, alt=600) 
+
+  # Define date range
+  date_start = datetime(2021, 5, 1)
+  date_end = datetime(2021, 8, 31)
+
+  # Get weather data
+  grower_weather_monthly = Monthly(location, start=date_start, end=date_end)
+  grower_weather_monthly = grower_weather_monthly.fetch()
+
+  avg_prec = round(grower_weather_monthly['prcp'].mean(),1)
+  avg_temp = round(grower_weather_monthly['tavg'].mean(),1)
+
+  return avg_prec,avg_temp
 
 
 ### MAIN PANEL ###
@@ -80,40 +125,41 @@ if uploaded_file is not None:
 
 #Step 2. Load Email Data
 st.header('Step 2. Load Email Data')
-st.write('Pres the button below to upload the 2021 email activity directly from SFMC')
+st.write('Press the button below to upload the 2021 email activity directly from SFMC')
 
 submit = st.button('Load Email Data')
 if submit:
+  # Load formatted & unstacked email data
+  filepath = 'inputs/email/emails_formatted.csv'
+  df_emails = pd.read_csv(filepath)
 
-    # Load formatted & unstacked email data
-    filepath = 'inputs/email/emails_formatted.csv'
-    df_emails = pd.read_csv(filepath)
+  # Classify each row by Program Year
+  for k, (startdate,enddate) in dict_proyr.items():
+      df_emails.loc[df_emails['action_date'].between(startdate,enddate), 'program_year'] = k
+  # Drop cols
+  df_emails = df_emails.drop(['action_date'],axis=1,inplace=False)
+  # Pivot by Grower
+  df_grower_email = pd.pivot_table(df_emails, index=['grower_email','program_year'], columns = 'action',aggfunc=len).reset_index()
+  # Format cols.
+  df_grower_email.columns = df_grower_email.columns.str.lower() # convert to lowercase
+  # Reorder columns
+  list_col = ['grower_email','program_year','sent','opened','clicked']
+  df_grower_email = df_grower_email.reindex(columns=list_col)
+  # Rename columns
+  df_grower_email = df_grower_email.rename({'sent':'emails_sent','opened':'emails_opened','clicked':'emails_clicked',},axis=1)
+  # Reset index
+  df_grower_email = df_grower_email.reset_index(drop=True)
+  
+  # Group by Prog. years
+  df_grower_email_by_year = df_grower_email.groupby(['program_year'])['emails_sent','emails_opened','emails_clicked'].sum().reset_index()
+  # add open rates and ctr                               
+  df_grower_email_by_year['open_rate'] = round((df_grower_email_by_year['emails_opened']/df_grower_email_by_year['emails_sent'])*100,2)
+  df_grower_email_by_year['ctr'] = round((df_grower_email_by_year['emails_clicked']/df_grower_email_by_year['emails_sent'])*100,2)
+  
+  # Display dataframe
+  st.write(df_grower_email_by_year)
 
-    # Classify each row by Program Year
-    for k, (startdate,enddate) in dict_proyr.items():
-        df_emails.loc[df_emails['action_date'].between(startdate,enddate), 'program_year'] = k
-
-    # Drop cols
-    df_emails = df_emails.drop(['action_date'],axis=1,inplace=False)
-
-    # Pivot by Grower
-    df_grower_email = pd.pivot_table(df_emails, index=['grower_email','program_year'], columns = 'action',aggfunc=len).reset_index()
-
-    # Format cols.
-    df_grower_email.columns = df_grower_email.columns.str.lower() # convert to lowercase
-
-    # Reorder columns
-    list_col = ['grower_email','program_year','sent','opened','clicked']
-    df_grower_email = df_grower_email.reindex(columns=list_col)
-
-    # Rename columns
-    df_grower_email = df_grower_email.rename({'sent':'emails_sent','opened':'emails_opened','clicked':'emails_clicked',},axis=1)
-
-    # Reset index
-    df_grower_email = df_grower_email.reset_index(drop=True)
-
-    #  Display dataframe
-    st.write(df_grower_email)
+    
 
 
 st.subheader('Email Analysis')
@@ -122,7 +168,14 @@ st.write('Below will be charts/statistical data for email perf. over the p. year
 
 #Step 3. Load Weather Data
 st.header('Step 3. Load Weather Data')
-st.write('Pres the button below to upload the 2021 weather data for grower regions from Environment Canada (via Meteostat')
+st.write('Press the button below to upload the 2021 weather data for grower regions from Environment Canada (via Meteostat')
+
+submit = st.button('Load Weather Data')
+if submit:
+  # Load formatted & unstacked email data
+  filepath = 'inputs/email/emails_formatted.csv'
+  df_emails = pd.read_csv(filepath)
+
 
 st.subheader('Weather Analysis')
 st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year')
