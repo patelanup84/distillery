@@ -94,7 +94,7 @@ if uploaded_file is not None:
     df_grower = pd.read_csv(uploaded_file)
 
     # select small sample size
-    df_geo = df_geo.sample(n=100)
+    df_grower = df_grower.sample(n=50)
 
     # Format/standardize dataframe
     df_grower = format_dataframe(df_grower)
@@ -165,16 +165,13 @@ if submit:
 
 #Step 3. Import Weather Data
 st.header('Step 3. Import Weather Data')
-st.write('Press the button below to upload the 2021 weather data for grower regions from Environment Canada (via Meteostat')
+st.write('Press the button below to upload the 2021 weather data from Environment Canada (via Meteostat) for the grower locations uploaded in Step 1. The 2021 weather data are averages during the growing months, from May 2021 to August 2021')
 
 submit = st.button('Import Weather Data')
 if submit:
-  # Load formatted & unstacked email data
-  filepath = 'inputs/geo/grower_geo_data.csv'
-  df_geo = pd.read_csv(filepath)
 
   # Create list of coordinates
-  list_coord = df_geo['site_coord'].tolist()
+  list_coord = df_grower['site_coord'].tolist()
   num_coord = len(list_coord)
   st.write("No. of locations to gather weather data for=",num_coord)
 
@@ -192,14 +189,42 @@ if submit:
   
   # Write results to dataframe
   df_weather = pd.DataFrame(results,columns = ['2021_site_avg_prec', '2021_site_avg_temp'])
+  df_weather['site_coord'] = list_coord #add coord col. to df
+
+  #rename columns
+  df_weather = df_weather.rename({'site_avg_prec':'site_avg_prec_2021',
+                                  'site_avg_temp':"site_avg_temp_2021",},axis=1)
 
   # Display dataframe
   st.write(df_weather)
 
 
-#Step 4. Blend Data
+#Step 4. Match Data
 st.header('Step 4. Match Data')
-st.write('Pres the button below to match the imported email and weather data to the uploaded grower master file')
+st.write('Press the button below to match the imported email and weather data to the uploaded grower master file')
+
+submit = st.button('Match Data')
+if submit:
+
+  #MERGE EMAIL DATA
+  # filter for program year = 2021
+  df_grower_email_2021 = df_grower_email[df_grower_email['program_year']=='2021']
+  #rename columns
+  df_grower_email_2021 = df_grower_email_2021.rename({'emails_sent':'emails_sent_2021',
+                                                      'emails_opened':"emails_opened_2021",
+                                                      'emails_clicked':'emails_clicked_2021'},axis=1)
+  # drop cols
+  df_grower_email_2021 = df_grower_email_2021.drop(['program_year'],axis=1,inplace=False)
+  #create CDP and merge email data
+  df_cdp = df_grower.merge(df_grower_email_2021, on='grower_email', how='left')
+  st.write("Email data matching completed.")
+
+  #merge weather data to df_grower
+  df_cdp = df_grower.merge(df_weather, on='site_coord', how='left')
+  st.write("Weather data matching completed.")
+
+  # Display dataframe
+  st.write(df_cdp)
 
 # st.subheader('Grower Data Analysis')
 # st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year. **What qustions do we want to answer?**')
