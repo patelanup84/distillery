@@ -126,11 +126,11 @@ if uploaded_file is not None:
 
 
 
-#Step 2. Import Email Data
-st.header('Step 2. Import Email Data')
+#Step 2. Import & Match Email Data
+st.header('Step 2. Import & Match Email Data')
 st.write('Press the button below to upload the historical email activity from SFMC & Act-on')
 
-submit = st.button('Import Email Data')
+submit = st.button('Match Email Data')
 if submit:
   # Load formatted & unstacked email data
   filepath = 'inputs/email/emails_formatted.csv'
@@ -159,15 +159,39 @@ if submit:
   df_grower_email_by_year['open_rate'] = round((df_grower_email_by_year['emails_opened']/df_grower_email_by_year['emails_sent'])*100,2)
   df_grower_email_by_year['ctr'] = round((df_grower_email_by_year['emails_clicked']/df_grower_email_by_year['emails_sent'])*100,2)
   
+  #MERGE WITH 2022 GROWER DATA
+  # filter for program year = 2021
+  df_grower_email_2021 = df_grower_email[df_grower_email['program_year']=='2021']
+
+  #rename columns
+  df_grower_email_2021 = df_grower_email_2021.rename({'emails_sent':'emails_sent_2021',
+                                                      'emails_opened':"emails_opened_2021",
+                                                      'emails_clicked':'emails_clicked_2021'},axis=1)
+  # drop cols
+  df_grower_email_2021 = df_grower_email_2021.drop(['program_year'],axis=1,inplace=False)
+  
+  #create CDP and merge email data
+  df_cdp = df_grower.merge(df_grower_email_2021, on='grower_email', how='left')
+  st.write("Email data matching completed.")
+
+  st.write("**Email Data Analysis**")
+  st.write("Total # of growers matched=","TBD")
+  st.write("% of growers with emails matched=","TBD")
+  st.write("% of total growers in list matched=","TBD")
+
   # Display dataframe
+  st.write("**Breakdown of Email Performance, Program YoY**")
   st.write(df_grower_email_by_year)
 
+  st.write("**Grower File, Enhanced with Email Data**")
+  st.write(df_cdp)
 
-#Step 3. Import Weather Data
-st.header('Step 3. Import Weather Data')
+
+#Step 3. Import & Match Weather Data
+st.header('Step 3. Import & Match Weather Data')
 st.write('Press the button below to upload the 2021 weather data from Environment Canada (via Meteostat) for the grower locations uploaded in Step 1. The 2021 weather data are averages during the growing months, from May 2021 to August 2021')
 
-submit = st.button('Import Weather Data')
+submit = st.button('Match Weather Data')
 if submit:
 
   # Create list of coordinates
@@ -195,36 +219,51 @@ if submit:
   df_weather = df_weather.rename({'site_avg_prec':'site_avg_prec_2021',
                                   'site_avg_temp':"site_avg_temp_2021",},axis=1)
 
-  # Display dataframe
-  st.write(df_weather)
+  #MERGE WITH 2022 GROWER DATA
 
-
-#Step 4. Match Data
-st.header('Step 4. Match Data')
-st.write('Press the button below to match the imported email and weather data to the uploaded grower master file')
-
-submit = st.button('Match Data')
-if submit:
-
-  #MERGE EMAIL DATA
-  # filter for program year = 2021
-  df_grower_email_2021 = df_grower_email[df_grower_email['program_year']=='2021']
-  #rename columns
-  df_grower_email_2021 = df_grower_email_2021.rename({'emails_sent':'emails_sent_2021',
-                                                      'emails_opened':"emails_opened_2021",
-                                                      'emails_clicked':'emails_clicked_2021'},axis=1)
-  # drop cols
-  df_grower_email_2021 = df_grower_email_2021.drop(['program_year'],axis=1,inplace=False)
-  #create CDP and merge email data
-  df_cdp = df_grower.merge(df_grower_email_2021, on='grower_email', how='left')
-  st.write("Email data matching completed.")
-
-  #merge weather data to df_grower
   df_cdp = df_grower.merge(df_weather, on='site_coord', how='left')
+
   st.write("Weather data matching completed.")
 
+  st.write("**Weather Data Analysis**")
+  st.write("Total # of growers matched=","TBD")
+  st.write("% of growers matched=","TBD")
+
   # Display dataframe
+  st.write("**Grower File, Enhanced with Weather Data**")
   st.write(df_cdp)
+
+
+# #Step 4. Match Data
+# st.header('Step 4. Match Data')
+# st.write('Press the button below to match the imported email and weather data to the uploaded grower master file')
+
+# submit = st.button('Match Data')
+
+# # if submit:
+
+#   #MERGE EMAIL DATA
+#   # filter for program year = 2021
+#   # df_grower_email_2021 = df_grower_email[df_grower_email['program_year']=='2021']
+#   # #rename columns
+#   # df_grower_email_2021 = df_grower_email_2021.rename({'emails_sent':'emails_sent_2021',
+#   #                                                     'emails_opened':"emails_opened_2021",
+#   #                                                     'emails_clicked':'emails_clicked_2021'},axis=1)
+#   # # drop cols
+#   # df_grower_email_2021 = df_grower_email_2021.drop(['program_year'],axis=1,inplace=False)
+#   # #create CDP and merge email data
+#   # df_cdp = df_grower.merge(df_grower_email_2021, on='grower_email', how='left')
+#   # st.write("Email data matching completed.")
+#   # st.write("Total # of growers matched=","[insert calc.]")
+#   # st.write("% of growers with emails matched=","[insert calc.]")
+#   # st.write("% of total growers in list matched=","[insert calc.]")
+
+#   # #merge weather data to df_grower
+#   # df_cdp = df_grower.merge(df_weather, on='site_coord', how='left')
+#   # st.write("Weather data matching completed.")
+
+#   # Display dataframe
+#   # st.write(df_cdp)
 
 # st.subheader('Grower Data Analysis')
 # st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year. **What qustions do we want to answer?**')
