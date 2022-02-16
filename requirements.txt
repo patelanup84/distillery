@@ -6,3 +6,4 @@ google-cloud-core==2.2.2
 google-auth==2.6.0
 google.resumable.media==2.2.1
 google.api.core==2.5.0
+meteostat==1.6.1

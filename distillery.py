@@ -173,8 +173,29 @@ st.write('Press the button below to upload the 2021 weather data for grower regi
 submit = st.button('Load Weather Data')
 if submit:
   # Load formatted & unstacked email data
-  filepath = 'inputs/email/emails_formatted.csv'
-  df_emails = pd.read_csv(filepath)
+  filepath = 'inputs/geo/grower_geo_data.csv'
+  df_geo = pd.read_csv(filepath)
+
+  # select small sample size
+  df_geo = df_geo.sample(n=50)
+
+  # Create list of coordinates
+  list_coord = df_geo['site_coord'].tolist()
+
+  # Create a placeholder list to hold results
+  results = []
+
+  # loop through list and get weather data
+  for i in tqdm(list_coord):
+    for coord in list_coord:
+      weather_result = get_meteostat_results(coord)
+      results.append(weather_result)
+  
+  # Write results to dataframe
+  df_weather = pd.DataFrame(results,columns = ['site_avg_prec', 'site_avg_temp'])
+
+  # Display dataframe
+  st.write(df_weather)
 
 
 st.subheader('Weather Analysis')
