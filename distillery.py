@@ -4,20 +4,10 @@ import streamlit as st
 import pandas as pd
 import re
 import numpy as np
-import os
-
-# for location data
-import requests
-import time
 
 # for weather data
 from datetime import datetime
 from meteostat import Point, Monthly
-
-# for progress bar
-from time import sleep
-from tqdm import tqdm
-
 
 #Title and Subheader
 st.title("Data Distillery")
@@ -233,40 +223,9 @@ if submit:
   st.write("**Grower File, Enhanced with Weather Data**")
   st.write(df_cdp)
 
-
-# #Step 4. Match Data
-# st.header('Step 4. Match Data')
-# st.write('Press the button below to match the imported email and weather data to the uploaded grower master file')
-
-# submit = st.button('Match Data')
-
-# # if submit:
-
-#   #MERGE EMAIL DATA
-#   # filter for program year = 2021
-#   # df_grower_email_2021 = df_grower_email[df_grower_email['program_year']=='2021']
-#   # #rename columns
-#   # df_grower_email_2021 = df_grower_email_2021.rename({'emails_sent':'emails_sent_2021',
-#   #                                                     'emails_opened':"emails_opened_2021",
-#   #                                                     'emails_clicked':'emails_clicked_2021'},axis=1)
-#   # # drop cols
-#   # df_grower_email_2021 = df_grower_email_2021.drop(['program_year'],axis=1,inplace=False)
-#   # #create CDP and merge email data
-#   # df_cdp = df_grower.merge(df_grower_email_2021, on='grower_email', how='left')
-#   # st.write("Email data matching completed.")
-#   # st.write("Total # of growers matched=","[insert calc.]")
-#   # st.write("% of growers with emails matched=","[insert calc.]")
-#   # st.write("% of total growers in list matched=","[insert calc.]")
-
-#   # #merge weather data to df_grower
-#   # df_cdp = df_grower.merge(df_weather, on='site_coord', how='left')
-#   # st.write("Weather data matching completed.")
-
-#   # Display dataframe
-#   # st.write(df_cdp)
-
-# st.subheader('Grower Data Analysis')
-# st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year. **What qustions do we want to answer?**')
+#Step 4. Analyze Results
+st.header('Step 4. Analyze Results')
+st.write('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua')
 
 #Step 5. Export Data
 st.header('Step 5. Export Data')
