@@ -1,4 +1,6 @@
 # import libraries
+import streamlit as st
+
 import pandas as pd
 import re
 import numpy as np
@@ -8,18 +10,18 @@ import os
 import requests
 import time
 
-# # for weather data
-# from datetime import datetime
-# from meteostat import Point, Monthly
+# for weather data
+from datetime import datetime
+from meteostat import Point, Monthly
 
-# # for progress bar
-# from time import sleep
-# from tqdm import tqdm
+# for progress bar
+from time import sleep
+from tqdm import tqdm
 
 
 #Title and Subheader
 st.title("Data Distillery")
-st.subheader("Prototype 1.0 - Email & Weather Data for 2022.")
+st.subheader("Prototype 1.0 - Match 2021 Email & Weather Data.")
 
 st.write("This application will enrich the existing AI Grower Data with email behaviour data for use in customer journey/persona building, marketing campaigns, ML modelling etc.")
 
@@ -36,15 +38,12 @@ def format_dataframe(df):
   df.columns = map(lambda x : x.replace("-", "_").replace(" ", "_"), df.columns) # replace hyphens/spaces with underscore
   df.columns = map(lambda x : x.replace("__", "_"), df.columns) # replace double underscore with single underscore
   df.columns = df.columns.str.strip() # strip leading and trailing whitespaces
-  
   specchar = '[≅,#,@,&,(,),?,\']' # List of spec. chars
   df.columns = df.columns.str.replace(specchar, '') # Remove spec. char.
-
   # Format row data
   df = df.applymap(lambda x: x.strip() if isinstance(x, str) else x) # strip leading and trailing whitespaces
   df = df.applymap(lambda x: x.upper() if isinstance(x, str) else x) # convert string values to uppercase
   df.fillna(0) #
-
   return df
 
 
@@ -86,12 +85,16 @@ def get_meteostat_results(coordinates):
 
 #Step 1. Load Grower Master file
 st.header('Step 1. Load Grower Master File')
+st.write('Note: For the purposes of this prototype, a random selection of 100 growers will be selected from the Master File.')
 
 uploaded_file = st.file_uploader('Load the latest grower master file.csv')
 if uploaded_file is not None:
     
     # load selected file
     df_grower = pd.read_csv(uploaded_file)
+
+    # select small sample size
+    df_geo = df_geo.sample(n=100)
 
     # Format/standardize dataframe
     df_grower = format_dataframe(df_grower)
@@ -123,11 +126,11 @@ if uploaded_file is not None:
 
 
 
-#Step 2. Load Email Data
-st.header('Step 2. Load Email Data')
-st.write('Press the button below to upload the 2021 email activity directly from SFMC')
+#Step 2. Import Email Data
+st.header('Step 2. Import Email Data')
+st.write('Press the button below to upload the historical email activity from SFMC & Act-on')
 
-submit = st.button('Load Email Data')
+submit = st.button('Import Email Data')
 if submit:
   # Load formatted & unstacked email data
   filepath = 'inputs/email/emails_formatted.csv'
@@ -159,55 +162,54 @@ if submit:
   # Display dataframe
   st.write(df_grower_email_by_year)
 
-    
 
-
-st.subheader('Email Analysis')
-st.write('Below will be charts/statistical data for email perf. over the p. year')
-
-
-#Step 3. Load Weather Data
-st.header('Step 3. Load Weather Data')
+#Step 3. Import Weather Data
+st.header('Step 3. Import Weather Data')
 st.write('Press the button below to upload the 2021 weather data for grower regions from Environment Canada (via Meteostat')
 
-submit = st.button('Load Weather Data')
+submit = st.button('Import Weather Data')
 if submit:
   # Load formatted & unstacked email data
   filepath = 'inputs/geo/grower_geo_data.csv'
   df_geo = pd.read_csv(filepath)
 
-  # select small sample size
-  df_geo = df_geo.sample(n=50)
-
   # Create list of coordinates
   list_coord = df_geo['site_coord'].tolist()
+  num_coord = len(list_coord)
+  st.write("No. of locations to gather weather data for=",num_coord)
 
   # Create a placeholder list to hold results
   results = []
 
   # loop through list and get weather data
-  for i in tqdm(list_coord):
-    for coord in list_coord:
-      weather_result = get_meteostat_results(coord)
-      results.append(weather_result)
+  # my_bar = st.progress(0)
+  # for percent_complete in range(num_coord):
+  #   time.sleep(0.1)
+  #   my_bar.progress(percent_complete + 1)
+  for coord in list_coord:
+    weather_result = get_meteostat_results(coord)
+    results.append(weather_result)
   
   # Write results to dataframe
-  df_weather = pd.DataFrame(results,columns = ['site_avg_prec', 'site_avg_temp'])
+  df_weather = pd.DataFrame(results,columns = ['2021_site_avg_prec', '2021_site_avg_temp'])
 
   # Display dataframe
   st.write(df_weather)
 
 
-st.subheader('Weather Analysis')
-st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year')
-
 #Step 4. Blend Data
-st.header('Step 4. Blend Data')
-st.write('Pres the button below to blend the latest email and weather data to the uploaded grower master file')
+st.header('Step 4. Match Data')
+st.write('Pres the button below to match the imported email and weather data to the uploaded grower master file')
 
-st.subheader('Grower Data Analysis')
-st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year. **What qustions do we want to answer?**')
+# st.subheader('Grower Data Analysis')
+# st.write('Below will be charts (i.e. map)/statistical data for weather. over the p. year. **What qustions do we want to answer?**')
 
 #Step 5. Export Data
 st.header('Step 5. Export Data')
 st.write('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua')
+
+submit = st.button('Export Enhanced Grower Dataset')
+# if submit:
+  # Load formatted & unstacked email data
+  # filepath = 'outputs/geo/grower_geo_data.csv'
+  
