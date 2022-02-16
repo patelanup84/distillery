@@ -48,11 +48,21 @@ if uploaded_file is not None:
     # load selected file
     df_grower = pd.read_csv(uploaded_file)
 
-    # format/clean data
-    df_grower = df_grower.astype(str)
+    # Format/standardize dataframe
     df_grower = format_dataframe(df_grower)
-    list_cols = ['grower_site_id','grower_site_name','grower_first_name','grower_email','grower_cellular']
-    df_grower[list_cols] = df_grower[list_cols].replace({'0':np.nan, 0:np.nan}) #repl. 0 with blanks
+
+    ## FORMAT/CLEAN DATA
+    # replace 0 with blanks for select cols.
+    list_cols = ['grower_site_id','grower_site_name','grower_first_name','grower_last_name','grower_email','grower_phone','grower_cellular','grower_contact_phone','grower_contact_cell']
+    df_grower[list_cols] = df_grower[list_cols].replace({'0':np.nan, 0:np.nan,'':np.nan})
+
+    # remove all numeric values from select cols.
+    list_cols = ['2021_sales','grower_phone','grower_cellular','grower_contact_phone','grower_contact_cell']
+    df_grower[list_cols] = df_grower[list_cols].replace('[^\d.]', '', regex = True).replace('',np.nan)
+
+    # convert select cols to numeric(float)
+    list_cols = ['2021_sales']
+    df_grower[list_cols] = df_grower[list_cols].astype(float)
 
     # display No. of growers
     num_growers = df_grower['grower_site_id'].nunique()
@@ -66,6 +76,8 @@ if uploaded_file is not None:
     # display dataframe
     st.write(df_grower)
 
+
+
 #Step 2. Load Email Data
 st.header('Step 2. Load Email Data')
 st.write('Pres the button below to upload the 2021 email activity directly from SFMC')
@@ -77,10 +89,32 @@ if submit:
     filepath = 'inputs/email/emails_formatted.csv'
     df_emails = pd.read_csv(filepath)
 
-    #  Display dataframe
-    st.write(df_emails)
+    # Classify each row by Program Year
+    for k, (startdate,enddate) in dict_proyr.items():
+        df_emails.loc[df_emails['action_date'].between(startdate,enddate), 'program_year'] = k
 
-    #blend with Acton data
+    # Drop cols
+    df_emails = df_emails.drop(['action_date'],axis=1,inplace=False)
+
+    # Pivot by Grower
+    df_grower_email = pd.pivot_table(df_emails, index=['grower_email','program_year'], columns = 'action',aggfunc=len).reset_index()
+
+    # Format cols.
+    df_grower_email.columns = df_grower_email.columns.str.lower() # convert to lowercase
+
+    # Reorder columns
+    list_col = ['grower_email','program_year','sent','opened','clicked']
+    df_grower_email = df_grower_email.reindex(columns=list_col)
+
+    # Rename columns
+    df_grower_email = df_grower_email.rename({'sent':'emails_sent','opened':'emails_opened','clicked':'emails_clicked',},axis=1)
+
+    # Reset index
+    df_grower_email = df_grower_email.reset_index(drop=True)
+
+    #  Display dataframe
+    st.write(df_grower_email)
+
 
 st.subheader('Email Analysis')
 st.write('Below will be charts/statistical data for email perf. over the p. year')
