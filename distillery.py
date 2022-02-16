@@ -8,13 +8,13 @@ import os
 import requests
 import time
 
-# for weather data
-from datetime import datetime
-from meteostat import Point, Daily, Monthly
+# # for weather data
+# from datetime import datetime
+# from meteostat import Point, Monthly
 
-# for progress bar
-from time import sleep
-from tqdm import tqdm
+# # for progress bar
+# from time import sleep
+# from tqdm import tqdm
 
 
 #Title and Subheader
