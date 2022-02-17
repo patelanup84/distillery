@@ -236,16 +236,19 @@ if submit:
   st.write(df_cdp_weather)
 
   #create weather df grouped by cluster
-  df_weather_by_cluster = df_cdp_weather.groupby(['alta_ml_2022_outputs_cluster'])['site_avg_prec','site_avg_temp'].mean().reset_index()
+  df_weather_by_cluster = df_cdp_weather.groupby(['alta_ml_2022_outputs_cluster'])['2021_site_avg_prec','2021_site_avg_temp'].mean().reset_index()
   df_weather_by_cluster = df_weather_by_cluster.set_index('alta_ml_2022_outputs_cluster')
 
-  st.write("**Avg. Temp, By Cluster**")
-  st.bar_chart(data=df_weather_by_cluster['site_avg_prec'], width=0, height=0, use_container_width=True)
+  st.write("**Avg. Prec., By Cluster**")
+  st.bar_chart(data=df_weather_by_cluster['2021_site_avg_prec'], width=0, height=0, use_container_width=True)
+
+  st.write("**Avg. Temp., By Cluster**")
+  st.bar_chart(data=df_weather_by_cluster['2021_site_avg_temp'], width=0, height=0, use_container_width=True)
 
 
 #Step 5. Export Data
 st.header('Step 5. Export Data')
-st.write('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua')
+st.write('Press the button below to export and load the enhanced dataset to AltaMLs FTP for processing.')
 
 submit = st.button('Export Enhanced Grower Dataset')
 # if submit:
