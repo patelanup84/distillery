@@ -10,6 +10,9 @@ import numpy as np
 from datetime import datetime
 from meteostat import Point, Monthly
 
+#for plotting
+# import matplotlib.pyplot as plt
+
 
 # ---------------------------------#
 ### THEME SETTINGS ###
@@ -93,7 +96,7 @@ if uploaded_file is not None:
   df_grower = pd.read_csv(uploaded_file)
 
   st.write("Select the number of growers to match. The higher the number, the longer it will take to process (and could potentially timeout). Recommended value is 50-100, which will take apprx. 5 mins to run through each of the steps. Default = 50") 
-  x = st.slider('Select a value: ',10,1499,100)
+  x = st.slider('Select a value: ',10,1500,100)
   
   # select small sample size
   df_grower = df_grower.sample(n=x)
@@ -177,9 +180,9 @@ if submit:
   num_email_activty = df_cdp_email['total_sent'].count()
   st.write("Total # of growers matched with emails =",num_email_activty)
   per_emails_matched_total = round(((num_email_activty/num_growers)*100),2)
-  st.write("% of total growers in list matched =",per_emails_matched_total)
+  st.write("Perc. of total growers in list matched =",per_emails_matched_total)
   per_emails_matched = round(((num_email_activty/num_emails)*100),2)
-  st.write("% of growers with emails matched =",per_emails_matched)
+  st.write("Perc. of growers with emails matched =",per_emails_matched)
 
   st.write("**Grower Data, Enhanced with Email Activity**")
   st.write(df_cdp_email)
@@ -226,24 +229,18 @@ if submit:
   num_prec_matched = df_cdp_weather['2021_site_avg_prec'].count()
   st.write("Total # of growers matched =",num_prec_matched)
   per_emails_matched_total = round(((num_prec_matched/num_growers)*100),2)
-  st.write("% of growers from list matched =",per_emails_matched_total)
+  st.write("Perc. of growers from list matched =",per_emails_matched_total)
 
   # Display dataframe
   st.write("**Grower File, Enhanced with Weather Data**")
   st.write(df_cdp_weather)
 
-#Step 4. Analyze Results
-st.header('Step 4. Analyze Results')
-st.write('Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua')
+  #create weather df grouped by cluster
+  df_weather_by_cluster = df_cdp_weather.groupby(['alta_ml_2022_outputs_cluster'])['site_avg_prec','site_avg_temp'].mean().reset_index()
+  df_weather_by_cluster = df_weather_by_cluster.set_index('alta_ml_2022_outputs_cluster')
 
-submit = st.button('Analyze')
-if submit:
-  #MERGE WITH 2022 GROWER DATA
-  df_cdp = df_cdp_email.merge(df_weather, on='site_coord', how='left')
-  
-  # Display dataframe
-  st.write("**Grower File, Enhanced with Email & Weather Data**")
-  st.write(df_cdp)
+  st.write("**Avg. Temp, By Cluster**")
+  st.bar_chart(data=df_weather_by_cluster['site_avg_prec'], width=0, height=0, use_container_width=True)
 
 
 #Step 5. Export Data
